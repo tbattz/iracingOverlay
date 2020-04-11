@@ -1,0 +1,6 @@
+[submodule "openGLPlotLive"]
+	path = openGLPlotLive
+	url = https://github.com/tbattz/openGLPlotLive.git
+[submodule "irsdk"]
+	path = irsdk
+	url = https://github.com/tbattz/irsdk.git

@@ -1,0 +1,8 @@
+/Lib/
+/build/
+/include/*
+!/include/glad/
+!/include/KHR/
+!/include/glad.c
+*.swp
+*.idea
