@@ -8,9 +8,8 @@ project(iracingTraceOverlay-proj)
 set(OpenGL_GL_PREFERENCE "GLVND")
 
 # Add c11++ flag to compiler
-#list(APPEND CMAKE_CXX_FLAGS "-std=c++11 -Wno-narrowing")
-list(APPEND CMAKE_CXX_FLAGS "-Wno-unknown-pragmas")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wno-unknown-pragmas")
+list(APPEND CMAKE_CXX_FLAGS "-std=c++11 -Wno-unknown-pragmas")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -std=c++11 -Wall -Wno-unknown-pragmas")
 
 # Add Cmake Module Path
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/")

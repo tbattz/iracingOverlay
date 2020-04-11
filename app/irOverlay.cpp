@@ -83,8 +83,9 @@ int main() {
     int windowHeight = 125;
 
     // Init GLFW
-    std::shared_ptr<GLPL::IWindow> window = std::shared_ptr<GLPL::IWindow>(new GLPL::Window(windowWidth, windowHeight, 1));
+    std::shared_ptr<GLPL::IWindow> window = std::shared_ptr<GLPL::IWindow>(new GLPL::Window(windowWidth, windowHeight, true));
     std::shared_ptr<GLPL::Window> window2 = std::dynamic_pointer_cast<GLPL::Window>(window);
+    window2->setBackgroundColor(0.25f, 0.25f, 0.25f, 0.75f);
     //window2->setFrameless(true);
     window2->setAlwaysOnTop(true);
 
@@ -100,7 +101,15 @@ int main() {
 	   ====================================================== */
     // Create Plot
     GLPL::Plot myplot(0.0, 0.0, 1.0, 1.0, window, &textShader);
-    myplot.axes.updateYAxesLimits(0.0, 1.0);
+    myplot.setPlotOutlineOn(false);
+    myplot.getAxes()->setAutoScale(false);
+    myplot.getAxes()->setPositionSize(0.0, 0.0, 1.0, 1.0);
+    myplot.getAxes()->setAxesLabelsOn(false);
+    myplot.getAxes()->setMajorTickSize(0.0);
+    myplot.getAxes()->setMinorTickSize(0.0);
+    myplot.getAxes()->updateYAxesLimits(0.0, 1.0);
+    myplot.getAxes()->setAxesAreaOutlineOn(false);
+
 
     // Create lines
     //std::shared_ptr<GLPL::Line2DVec> lineThrottle = std::shared_ptr<GLPL::Line2DVec>(new GLPL::Line2DVec(irData.getThrottleVector()));
@@ -120,7 +129,7 @@ int main() {
         //client.waitForData(16);
         //std::cout << client.getVarFloat("Throttle", 0) << std::endl;
         diskClient.getNextData();
-        std::cout << diskClient.getVarFloat("Throttle", 0) << std::endl;
+        //std::cout << diskClient.getVarFloat("Throttle", 0) << std::endl;
 
         // Pre-loop draw
         window2->preLoopDraw(true);
