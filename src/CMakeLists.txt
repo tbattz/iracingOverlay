@@ -2,6 +2,7 @@
 project(iracingTraceOverlay)
 
 # Add Include Directory
+include_directories("${CMAKE_SOURCE_DIR}/../Includes/openGLPlotLive/")
 include_directories("${CMAKE_SOURCE_DIR}/../Includes/irsdk/")
 include_directories("${CMAKE_SOURCE_DIR}")
 

@@ -6,10 +6,10 @@
 #define IRACINGTRACEOVERLAY_PROJ_THROTTLEBRAKETRACEVIEW_H
 
 
-#include <../openGLPlotLive/src/rendering/shader.h>
-#include <../openGLPlotLive/src/lines/Line2D2Vecs.h>
-#include "../openGLPlotLive/src/window/window.h"
-#include <../openGLPlotLive/src/plot/plot.h>
+#include <openGLPlotLive/src/rendering/shader.h>
+#include <openGLPlotLive/src/lines/Line2D2Vecs.h>
+#include <openGLPlotLive/src/window/window.h>
+#include <openGLPlotLive/src/plot/plot.h>
 
 
 class ThrottleBrakeTraceView : public GLPL::Window {

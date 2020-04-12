@@ -34,9 +34,9 @@
 #include <memory>
 
 // Project Includes
-#include "../openGLPlotLive/src/rendering/fonts.h"
-#include "../openGLPlotLive/src/window/window.h"
-#include "../openGLPlotLive/src/plot/plot.h"
+#include <openGLPlotLive/src/rendering/fonts.h>
+#include <openGLPlotLive/src/window/window.h>
+#include <openGLPlotLive/src/plot/plot.h>
 #include <openGLPlotLive/src/lines/Line2DVec.h>
 
 
@@ -100,8 +100,8 @@ int main() {
     myplot.getAxes()->updateYAxesLimits(0.0, 1.0);
 
     // Create lines
-    std::shared_ptr<GLPL::Line2DVec> lineThrottle = std::shared_ptr<GLPL::Line2DVec>(new GLPL::Line2DVec(dataParser.getThrottleVector()));
-    std::shared_ptr<GLPL::Line2DVec> lineBrake = std::shared_ptr<GLPL::Line2DVec>(new GLPL::Line2DVec(dataParser.getBrakeVector()));
+    std::shared_ptr<GLPL::Line2DVec<float>> lineThrottle = std::shared_ptr<GLPL::Line2DVec<float>>(new GLPL::Line2DVec<float>(dataParser.getThrottleVector()));
+    std::shared_ptr<GLPL::Line2DVec<float>> lineBrake = std::shared_ptr<GLPL::Line2DVec<float>>(new GLPL::Line2DVec<float>(dataParser.getBrakeVector()));
     lineThrottle->setLineColour(LC_GREEN);
     lineBrake->setLineColour(LC_RED);
 

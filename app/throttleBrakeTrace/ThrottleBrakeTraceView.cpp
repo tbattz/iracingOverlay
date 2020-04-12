@@ -5,8 +5,6 @@
 
 #include "ThrottleBrakeTraceView.h"
 
-#include <memory>
-
 
 
 ThrottleBrakeTraceView::ThrottleBrakeTraceView(std::vector<float>* sessionTimePt,

@@ -16,10 +16,8 @@
 
 // Project Includes
 #include "IRData.h"
-#include "../openGLPlotLive/src/rendering/fonts.h"
-#include "../openGLPlotLive/src/window/window.h"
-#include "../openGLPlotLive/src/plot/plot.h"
-#include <openGLPlotLive/src/lines/Line2DVec.h>
+#include <openGLPlotLive/src/rendering/fonts.h>
+#include <openGLPlotLive/src/window/window.h>
 #include <app/throttleBrakeTrace/ThrottleBrakeTraceController.h>
 
 
