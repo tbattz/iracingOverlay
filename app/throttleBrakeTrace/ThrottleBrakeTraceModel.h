@@ -8,12 +8,13 @@
 
 // Standard Includes
 #include <vector>
+#include <memory>
 
 
 class ThrottleBrakeTraceModel {
 public:
     // Constructor
-    ThrottleBrakeTraceModel();
+    ThrottleBrakeTraceModel(unsigned int maxVectorLen);
 
     // Functions
     void setSessionTime(float newSessionTime);
@@ -24,11 +25,16 @@ public:
     std::vector<float>* getLapDistPt();
     std::vector<float>* getThrottlePt();
     std::vector<float>* getBrakePt();
+    void incrementIndex();
+    unsigned int getCurrStartIndex();
 
 
 private:
     // Data
     float sessionStartTime = -1;
+    unsigned int maxVectorLen = -1;
+    unsigned int currStartIndex = 0; // The current start of the vector to split for using constant length vectors
+    unsigned int currWriteIndex = 0;
     std::vector<float> sessionTimeHist;
     std::vector<float> lapDistHist;
     std::vector<float> throttleHist;

@@ -27,13 +27,13 @@ ThrottleBrakeTraceView::ThrottleBrakeTraceView(std::vector<float>* sessionTimePt
 
 }
 
-void ThrottleBrakeTraceView::drawView() {
+void ThrottleBrakeTraceView::drawView(unsigned int currStartIndex) {
     // Pre-loop draw
     preLoopDraw(true);
 
     // Update data
-    lineThrottle->updateInternalData();
-    lineBrake->updateInternalData();
+    lineThrottle->updateInternalData(currStartIndex);
+    lineBrake->updateInternalData(currStartIndex);
     myplot->getAxes()->updateXAxesLimits(lineThrottle->getMinMax()[1] - 10, lineThrottle->getMinMax()[1]);
 
     // Draw Window
@@ -60,8 +60,8 @@ void ThrottleBrakeTraceView::setupLines(std::vector<float>* sessionTimePt,
                                         std::vector<float>* throttlePt,
                                         std::vector<float>* brakePt) {
     // Setup lines
-    lineThrottle = std::make_shared<GLPL::Line2D2Vecs>(sessionTimePt, throttlePt);
-    lineBrake = std::make_shared<GLPL::Line2D2Vecs>(sessionTimePt, brakePt);
+    lineThrottle = std::make_shared<GLPL::Line2D2CircularVecs>(sessionTimePt, throttlePt);
+    lineBrake = std::make_shared<GLPL::Line2D2CircularVecs>(sessionTimePt, brakePt);
     lineThrottle->setLineColour(LC_GREEN);
     lineBrake->setLineColour(LC_RED);
 

@@ -28,14 +28,13 @@ private:
     // Functions
 
     // Data
-    int maxCount;
     std::shared_ptr<IRData> irData;
     
     // Model
-    ThrottleBrakeTraceModel model;
+    std::shared_ptr<ThrottleBrakeTraceModel> model;
 
     // View
-    ThrottleBrakeTraceView view;
+    std::shared_ptr<ThrottleBrakeTraceView> view;
 
 };
 

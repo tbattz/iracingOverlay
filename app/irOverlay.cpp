@@ -13,11 +13,12 @@
 
 // Standard Includes
 #include <memory>
+#include <thread>
+#include <chrono>
 
 // Project Includes
 #include "IRData.h"
 #include <openGLPlotLive/src/rendering/fonts.h>
-#include <openGLPlotLive/src/window/window.h>
 #include <app/throttleBrakeTrace/ThrottleBrakeTraceController.h>
 
 
@@ -43,6 +44,8 @@ int main() {
         // Update Windows
         throttleBrakeTraceController.drawWindow();
 
+        // Sleep for a little
+        std::this_thread::sleep_for (std::chrono::milliseconds(10));
     }
 
     glfwTerminate();

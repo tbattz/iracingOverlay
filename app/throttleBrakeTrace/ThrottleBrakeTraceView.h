@@ -7,9 +7,9 @@
 
 
 #include <openGLPlotLive/src/rendering/shader.h>
-#include <openGLPlotLive/src/lines/Line2D2Vecs.h>
 #include <openGLPlotLive/src/window/window.h>
 #include <openGLPlotLive/src/plot/plot.h>
+#include <openGLPlotLive/src/lines/Line2D2CircularVecs.h>
 
 
 class ThrottleBrakeTraceView : public GLPL::Window {
@@ -20,7 +20,7 @@ public:
                            std::vector<float>* brakePt);
 
     // Functions
-    void drawView();
+    void drawView(unsigned int currStartIndex);
 
 private:
     // Functions
@@ -33,8 +33,8 @@ private:
     GLPL::Shader plot2dShader;
     GLPL::Shader textShader;
     std::shared_ptr<GLPL::Plot> myplot;
-    std::shared_ptr<GLPL::Line2D2Vecs> lineThrottle;
-    std::shared_ptr<GLPL::Line2D2Vecs> lineBrake;
+    std::shared_ptr<GLPL::Line2D2CircularVecs> lineThrottle;
+    std::shared_ptr<GLPL::Line2D2CircularVecs> lineBrake;
 
 };
 

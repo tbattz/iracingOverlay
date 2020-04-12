@@ -10,24 +10,35 @@
 #include "ThrottleBrakeTraceController.h"
 
 
-ThrottleBrakeTraceController::ThrottleBrakeTraceController(std::shared_ptr<IRData> irData, unsigned int pastSeconds) : model(),
-    view(model.getSessionTimePt(), model.getThrottlePt(), model.getBrakePt()) {
+ThrottleBrakeTraceController::ThrottleBrakeTraceController(std::shared_ptr<IRData> irData, unsigned int pastSeconds) {
+        // Setup IRacing Data
         this->irData = std::move(irData);
-        this->maxCount = ceil(1000.0 * pastSeconds/this->irData->getTimeout());
+        unsigned int maxCount = ceil(1000.0 * pastSeconds/this->irData->getTimeout());
+
+        // Create Model
+        model = std::make_shared<ThrottleBrakeTraceModel>(maxCount);
+
+        // Create view
+        view = std::make_shared<ThrottleBrakeTraceView>(
+                model->getSessionTimePt(),
+                model->getThrottlePt(),
+                model->getBrakePt());
+
 }
 
 void ThrottleBrakeTraceController::updateData() {
     // Update the vectors
-    model.setSessionTime(irData->getSessionTime());
-    model.setLapDist(irData->getLapDist());
-    model.setThrottle(irData->getThrottle());
-    model.setBrake(irData->getBrake());
+    model->setSessionTime(irData->getSessionTime());
+    model->setLapDist(irData->getLapDist());
+    model->setThrottle(irData->getThrottle());
+    model->setBrake(irData->getBrake());
+    model->incrementIndex();
 }
 
 void ThrottleBrakeTraceController::drawWindow() {
-    view.drawView();
+    view->drawView(model->getCurrStartIndex());
 }
 
 GLFWwindow* ThrottleBrakeTraceController::getWindow() {
-    return view.getWindow();
+    return view->getWindow();
 }
