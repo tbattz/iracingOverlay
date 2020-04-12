@@ -97,7 +97,7 @@ int main() {
 	   ====================================================== */
     // Create Plot
     GLPL::Plot myplot(0.0, 0.0, 1.0, 1.0, window, &textShader);
-    myplot.axes.updateYAxesLimits(0.0, 1.0);
+    myplot.getAxes()->updateYAxesLimits(0.0, 1.0);
 
     // Create lines
     std::shared_ptr<GLPL::Line2DVec> lineThrottle = std::shared_ptr<GLPL::Line2DVec>(new GLPL::Line2DVec(dataParser.getThrottleVector()));
@@ -119,7 +119,7 @@ int main() {
         window2->preLoopDraw(true);
 
         // Update axes
-        myplot.axes.updateXAxesLimits(dataParser.lastTime - 10, dataParser.lastTime);
+        myplot.getAxes()->updateXAxesLimits(dataParser.lastTime - 10, dataParser.lastTime);
 
         // Draw Plot
         myplot.Draw(plot2dShader);

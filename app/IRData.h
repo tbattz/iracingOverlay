@@ -6,46 +6,56 @@
 #define IRSDK_DATAPARSER_H
 
 // IRacing SDK Includes
-#include "../irsdk/irsdk_defines.h"
+#include <irsdk/irsdk_defines.h>
+#include <irsdk/irsdk_client.h>
+#include <irsdk/irsdk_diskclient.h>
 
 // Standard Includes
 #include <minwindef.h>
 #include <vector>
 
 
+
+enum IRDataMode {
+    MEMFILE,
+    IBTFILE
+};
+
 class IRData {
 public:
     // Constructor
     IRData();
+    IRData(int timeout);
+    IRData(const char* ibtFile);
 
     // Functions
-    void parserLoop();
-    void endSession(bool shutdown);
-    std::vector<float>* getTimeVector();
-    std::vector<float>* getThrottleVector();
-    std::vector<float>* getBrakeVector();
-    void setStartTime(float startTime);
-
-    float lastTime = 0;
+    void updateData();
+    void parseClientData();
+    void parseDiskClientData();
+    int getTimeout();
+    float getSessionTime();
+    float getLapDist();
+    float getThrottle();
+    float getBrake();
+    void endSession();
 
 private:
     // Functions
-    void initData(const irsdk_header *header, char* &data, int &nData);
-    void parseData(const irsdk_header *header, const char *data);
+    void setupTiming();
 
-    // Parsing Data
-    int timeout = 16; // ms
-    char* gData = NULL;
-    int gNData = 0;
-    int counter = 0;
-    double startTime = -1;
-    char sessionTimeName[32] = "SessionTime";
-    char throttleName[32] = "Throttle";
-    char brakeName[32] = "Brake";
-    // Stored data
-    std::vector<float> time;
-    std::vector<float> throttle;
-    std::vector<float> brake;
+    // Data
+    // Setup
+    IRDataMode mode;
+    unsigned int timeout = 16; // ms
+    const char* path;
+    // Clients
+    irsdkClient& client = irsdkClient::instance();
+    irsdkDiskClient diskClient = irsdkDiskClient();
+    // Variables
+    float sessionTime = 0;
+    float lapDist = 0;
+    float throttle = 0;
+    float brake = 0;
 };
 
 

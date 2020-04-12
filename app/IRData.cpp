@@ -2,10 +2,23 @@
 // Created by tbatt on 8/04/2020.
 //
 
+#define MIN_WIN_VER 0x0501
+
+#ifndef WINVER
+#	define WINVER			MIN_WIN_VER
+#endif
+
+#ifndef _WIN32_WINNT
+#	define _WIN32_WINNT		MIN_WIN_VER
+#endif
+
+#pragma warning(disable:4996) //_CRT_SECURE_NO_WARNINGS
+
 
 // Standard Includes
 #include <windows.h>
 #include <cstdio>
+#include <iostream>
 
 // for timeBeginPeriod
 #pragma comment(lib, "Winmm")
@@ -16,110 +29,109 @@
 
 
 IRData::IRData() {
+    this->mode = MEMFILE;
+    IRData::setupTiming();
+}
+
+IRData::IRData(int timeout) {
+    this->mode = MEMFILE;
+    this->timeout = timeout;
+    IRData::setupTiming();
+}
+
+IRData::IRData(const char* ibtFile) {
+    this->mode = IBTFILE;
+    this->path = ibtFile;
+    IRData::setupTiming();
+}
+
+void IRData::setupTiming() {
+    // Increase process priority to avoid sim taking all the cpu time
+    SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS);
+
+    // Set minuimum resolution on periodic timers
+    timeBeginPeriod(1);
 
 }
 
-void IRData::parserLoop() {
-    // Wait for new data, copying it to a buffer
-    if(irsdk_waitForDataReady(timeout, gData)) {
-        const irsdk_header* pHeader = irsdk_getHeader();
-        if(pHeader) {
-            // If header changes in size, assumes a new connection
-            if(!gData || gNData != pHeader->bufLen) {
-                // Reallocate buffer to fit, lookup data offsets
-                IRData::initData(pHeader, gData, gNData);
-            } else if (gData) {
-                // We have some data
-                if(counter++ % 1 == 0) {
-                    IRData::parseData(pHeader, gData);
-                }
+void IRData::updateData() {
+    bool foundData = false;
+    switch(mode) {
+        case MEMFILE: {
+            foundData = client.waitForData(timeout);
+            if (foundData) {
+                IRData::parseClientData();
             }
+            break;
         }
-    } else if(!irsdk_isConnected()) {
-        // Session has ended
-        IRData::endSession(false);
-    }
-
-}
-
-void IRData::initData(const irsdk_header *header, char* &data, int &nData)
-{
-    if(data) {
-        delete [] data;
-    }
-    nData = header->bufLen;
-    data = new char[nData];
-}
-
-void IRData::parseData(const irsdk_header *header, const char *data) {
-    if (header && data) {
-        // Loop through headers
-        double newTime = -1;
-        float newThrottle = -1;
-        float newBrake = -1;
-        for(int i = 0; i < header->numVars; i++) {
-            // Get entry
-            const irsdk_varHeader *rec = irsdk_getVarHeaderEntry(i);
-
-            // Check for required data
-            if (!strcmp(rec->name, sessionTimeName)) {
-                newTime = ((double *) (data + rec->offset))[0];
-                printf("s: %0.5f", ((float *) (data + rec->offset))[0]);
-            } else if (!strcmp(rec->name, throttleName)) {
-                newThrottle = ((float *) (data + rec->offset))[0];
-                printf("T: %0.5f", ((float *) (data + rec->offset))[0]);
-            } else if (!strcmp(rec->name, brakeName)) {
-                newBrake = ((float *) (data + rec->offset))[0];
-                printf("B: %0.5f", ((float *) (data + rec->offset))[0]);
+        case IBTFILE: {
+            if(!diskClient.isFileOpen()) {
+                // Try to open the file
+                diskClient.openFile(path);
             }
+            if(diskClient.isFileOpen()) {
+                foundData = diskClient.getNextData();
+            }
+            if(foundData) {
+                IRData::parseDiskClientData();
+            }
+            break;
         }
-        printf("\n");
-
-        if(startTime < 0) {
-            startTime = newTime;
+        default: {
+            std::cout << "Undefined IRData mode!" << std::endl;
         }
-        if (newTime > -1 && newThrottle > -1) {
-            throttle.push_back((float)(newTime - startTime));
-            throttle.push_back(newThrottle);
-        }
-        if (newTime > -1 && newBrake > -1) {
-            brake.push_back((float)(newTime - startTime));
-            brake.push_back(newBrake);
-        }
-        lastTime = (float)(newTime - startTime);
     }
 }
 
-void IRData::endSession(bool shutdown)
-{
-    // Clean up pointer
-    if(gData) {
-        delete[] gData;
+void IRData::parseClientData() {
+    sessionTime = client.getVarFloat("SessionTime", 0);
+    lapDist = client.getVarDouble("LapDist", 0);
+    throttle = client.getVarFloat("Throttle", 0);
+    brake = client.getVarFloat("Brake", 0);
+    //std::cout << throttle << std::endl;
+}
+
+void IRData::parseDiskClientData() {
+    sessionTime = diskClient.getVarDouble("SessionTime", 0);
+    lapDist = diskClient.getVarFloat("LapDist", 0);
+    throttle = diskClient.getVarFloat("Throttle", 0);
+    brake = diskClient.getVarFloat("Brake", 0);
+    //std::cout << throttle << std::endl;
+}
+
+int IRData::getTimeout() {
+    return this->timeout;
+}
+
+float IRData::getSessionTime() {
+    return sessionTime;
+}
+
+float IRData::getLapDist() {
+    return lapDist;
+}
+
+float IRData::getThrottle() {
+    return throttle;
+}
+
+float IRData::getBrake() {
+    return brake;
+}
+
+void IRData::endSession() {
+    switch(mode) {
+        case MEMFILE: {
+            break;
+        }
+        case IBTFILE: {
+            diskClient.closeFile();
+            break;
+        }
+        default: {
+            break;
+        }
     }
-    gData = NULL;
-
-    // Shutdown connection
-    if(shutdown)
-    {
-        irsdk_shutdown();
-        timeEndPeriod(1);
-    }
-}
-
-std::vector<float> *IRData::getTimeVector() {
-    return &time;
-}
-
-std::vector<float> *IRData::getThrottleVector() {
-    return &throttle;
-}
-
-std::vector<float> *IRData::getBrakeVector() {
-    return &brake;
-}
-
-void IRData::setStartTime(float startTime) {
-    this->startTime = startTime;
 }
 
 
