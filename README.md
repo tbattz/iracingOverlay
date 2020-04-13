@@ -1,4 +1,4 @@
-# openGLPlotLive
+# iracingOverlay
 
 An openGL C++ based lightweight overlay for IRacing.
 
