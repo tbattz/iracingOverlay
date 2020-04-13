@@ -5,6 +5,7 @@
 #include <csignal>
 #include <algorithm>
 #include <iostream>
+#include <memory>
 #include <vector>
 
 
@@ -23,13 +24,19 @@
 #include <src/variablePlotter/VariablePlotController.h>
 
 
-int main() {
+int main(int argc, char* argv[]) {
     std::cout << "Starting IRacingOverlay Version 0.2." << std::endl;
 
     // Create IRData
-    std::shared_ptr<IRData> irData = std::shared_ptr<IRData>(new IRData());
-    //const char* filepath = "C:\\Users\\tbatt\\Documents\\iRacing\\telemetry\\dallaraf3_brandshatch indy 2020-04-09 21-32-00.ibt";
-    //std::shared_ptr<IRData> irData = std::shared_ptr<IRData>(new IRData(filepath));
+    std::shared_ptr<IRData> irData;
+    if(argc == 1 || strcmp(argv[1], "sim") == 0) {
+        irData = std::make_shared<IRData>();
+    } else if (strcmp(argv[1], "file") == 0) {
+        const char* filepath = R"(C:\Users\tbatt\Documents\iRacing\telemetry\dallaraf3_brandshatch indy 2020-04-09 21-32-00.ibt)";
+        irData = std::make_shared<IRData>(filepath);
+    }
+
+
 
 
     // Create ThrottleBrakeTrace Controller
