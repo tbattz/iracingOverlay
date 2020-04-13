@@ -3,7 +3,9 @@
 An openGL C++ based lightweight overlay for IRacing.
 
 # What can it do
-To do ...
+* Display a scrolling transparent graph of the throttle and brake traces
+
+![GitHub Logo](Other/throttleBrakeTrace.png)
 
 
 # Dependencies

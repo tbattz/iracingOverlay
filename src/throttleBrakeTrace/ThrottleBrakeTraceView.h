@@ -7,12 +7,12 @@
 
 
 #include <openGLPlotLive/src/rendering/shader.h>
-#include <openGLPlotLive/src/window/window.h>
+#include <openGLPlotLive/src/window/FramelessDraggableWindow.h>
 #include <openGLPlotLive/src/plot/plot.h>
 #include <openGLPlotLive/src/shadedLines/ShadedLine2D2CircularVecs.h>
 
 
-class ThrottleBrakeTraceView : public GLPL::Window {
+class ThrottleBrakeTraceView : public GLPL::FramelessDraggableWindow {
 public:
     // Constructor
     ThrottleBrakeTraceView(std::vector<float>* sessionTimePt,

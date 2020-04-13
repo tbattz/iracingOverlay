@@ -26,9 +26,9 @@ int main() {
     std::cout << "Starting IRacingOverlay Version 0.2." << std::endl;
 
     // Create IRData
-    //std::shared_ptr<IRData> irData = std::shared_ptr<IRData>(new IRData());
-    const char* filepath = "C:\\Users\\tbatt\\Documents\\iRacing\\telemetry\\dallaraf3_brandshatch indy 2020-04-09 21-32-00.ibt";
-    std::shared_ptr<IRData> irData = std::shared_ptr<IRData>(new IRData(filepath));
+    std::shared_ptr<IRData> irData = std::shared_ptr<IRData>(new IRData());
+    //const char* filepath = "C:\\Users\\tbatt\\Documents\\iRacing\\telemetry\\dallaraf3_brandshatch indy 2020-04-09 21-32-00.ibt";
+    //std::shared_ptr<IRData> irData = std::shared_ptr<IRData>(new IRData(filepath));
 
 
     // Create ThrottleBrakeTrace Controller

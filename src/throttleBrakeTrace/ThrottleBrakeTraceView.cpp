@@ -10,11 +10,9 @@
 ThrottleBrakeTraceView::ThrottleBrakeTraceView(std::vector<float>* sessionTimePt,
                                                std::vector<float>* throttlePt,
                                                std::vector<float>* brakePt)
-        : GLPL::Window(900, 125, true) {
+        : GLPL::FramelessDraggableWindow(700, 80, true, true) {
         // Set background color
         this->setBackgroundColor(0.25f, 0.25f, 0.25f, 0.75f);
-        //this->setFrameless(true);
-        this->setAlwaysOnTop(true);
 
         // Create plot
         ThrottleBrakeTraceView::setupPlot();
