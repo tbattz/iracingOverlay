@@ -9,10 +9,12 @@
 
 ThrottleBrakeTraceView::ThrottleBrakeTraceView(std::vector<float>* sessionTimePt,
                                                std::vector<float>* throttlePt,
-                                               std::vector<float>* brakePt)
+                                               std::vector<float>* brakePt,
+                                               unsigned int pastSeconds)
         : GLPL::FramelessDraggableWindow(700, 80, true, true) {
         // Set background color
         this->setBackgroundColor(0.25f, 0.25f, 0.25f, 0.75f);
+        this->pastSeconds = pastSeconds;
 
         // Create plot
         ThrottleBrakeTraceView::setupPlot();
@@ -29,7 +31,7 @@ void ThrottleBrakeTraceView::drawView(unsigned int currStartIndex) {
     // Update data
     lineThrottle->updateInternalData(currStartIndex);
     lineBrake->updateInternalData(currStartIndex);
-    myplot->getAxes()->updateXAxesLimits(lineThrottle->getMinMax()[1] - 10, lineThrottle->getMinMax()[1]);
+    myplot->getAxes()->updateXAxesLimits(lineThrottle->getMinMax()[1] - (float)pastSeconds, lineThrottle->getMinMax()[1]);
 
     // Draw Window
     myplot->Draw();

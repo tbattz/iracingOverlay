@@ -17,7 +17,8 @@ public:
     // Constructor
     ThrottleBrakeTraceView(std::vector<float>* sessionTimePt,
                            std::vector<float>* throttlePt,
-                           std::vector<float>* brakePt);
+                           std::vector<float>* brakePt,
+                           unsigned int pastSeconds);
 
     // Functions
     void drawView(unsigned int currStartIndex);
@@ -31,6 +32,7 @@ private:
 
     // Data
     float opacityRatio = 0.5;
+    unsigned int pastSeconds = 0;
     std::shared_ptr<GLPL::Plot> myplot;
     std::shared_ptr<GLPL::ShadedLine2D2CircularVecs> lineThrottle;
     std::shared_ptr<GLPL::ShadedLine2D2CircularVecs> lineBrake;

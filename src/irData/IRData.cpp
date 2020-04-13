@@ -99,6 +99,60 @@ void IRData::parseDiskClientData() {
     //std::cout << throttle << std::endl;
 }
 
+float IRData::getVarFloat(const char* varName, int entry) {
+    float value = 0;
+    switch(mode) {
+        case MEMFILE: {
+            value = client.getVarFloat(varName, entry);
+            break;
+        }
+        case IBTFILE: {
+            value = diskClient.getVarFloat(varName, entry);
+            break;
+        }
+        default: {
+            std::cout << "Undefined IRData mode!" << std::endl;
+        }
+    }
+    return value;
+}
+
+double IRData::getVarDouble(const char* varName, int entry) {
+    double value = 0;
+    switch(mode) {
+        case MEMFILE: {
+            value = client.getVarDouble(varName, entry);
+            break;
+        }
+        case IBTFILE: {
+            value = diskClient.getVarDouble(varName, entry);
+            break;
+        }
+        default: {
+            std::cout << "Undefined IRData mode!" << std::endl;
+        }
+    }
+    return value;
+}
+
+int IRData::getVarInt(const char* varName, int entry) {
+    int value = 0;
+    switch(mode) {
+        case MEMFILE: {
+            value = client.getVarInt(varName, entry);
+            break;
+        }
+        case IBTFILE: {
+            value = diskClient.getVarInt(varName, entry);
+            break;
+        }
+        default: {
+            std::cout << "Undefined IRData model" << std::endl;
+        }
+    }
+    return value;
+}
+
 int IRData::getTimeout() {
     return this->timeout;
 }

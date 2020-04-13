@@ -32,6 +32,9 @@ public:
     void updateData();
     void parseClientData();
     void parseDiskClientData();
+    float getVarFloat(const char* varName, int entry);
+    double getVarDouble(const char* varName, int entry);
+    int getVarInt(const char* varName, int entry);
     int getTimeout();
     float getSessionTime();
     float getLapDist();

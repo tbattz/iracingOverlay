@@ -22,7 +22,8 @@ ThrottleBrakeTraceController::ThrottleBrakeTraceController(std::shared_ptr<IRDat
         view = std::make_shared<ThrottleBrakeTraceView>(
                 model->getSessionTimePt(),
                 model->getThrottlePt(),
-                model->getBrakePt());
+                model->getBrakePt(),
+                pastSeconds);
 
 }
 
