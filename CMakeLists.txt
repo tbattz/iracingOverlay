@@ -54,5 +54,5 @@ add_definitions(-DGLFW_INCLUDE_NONE)
 # Add subdirectories
 add_subdirectory(openGLPlotLive)
 add_subdirectory(src)
-add_subdirectory(app)
+
 

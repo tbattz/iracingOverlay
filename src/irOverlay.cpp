@@ -17,9 +17,9 @@
 #include <chrono>
 
 // Project Includes
-#include "IRData.h"
+#include "src/irData/IRData.h"
 #include <openGLPlotLive/src/rendering/fonts.h>
-#include <app/throttleBrakeTrace/ThrottleBrakeTraceController.h>
+#include <src/throttleBrakeTrace/ThrottleBrakeTraceController.h>
 
 
 int main() {

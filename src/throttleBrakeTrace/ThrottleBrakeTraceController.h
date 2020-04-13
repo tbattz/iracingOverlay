@@ -7,8 +7,8 @@
 
 
 // Project Includes
-#include <app/IDataReceiver.h>
-#include <app/IRData.h>
+#include <src/irData/IDataReceiver.h>
+#include <src/irData/IRData.h>
 #include <memory>
 #include "ThrottleBrakeTraceModel.h"
 #include "ThrottleBrakeTraceView.h"
