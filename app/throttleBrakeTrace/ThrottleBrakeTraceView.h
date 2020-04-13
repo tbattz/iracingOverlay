@@ -9,7 +9,7 @@
 #include <openGLPlotLive/src/rendering/shader.h>
 #include <openGLPlotLive/src/window/window.h>
 #include <openGLPlotLive/src/plot/plot.h>
-#include <openGLPlotLive/src/lines/Line2D2CircularVecs.h>
+#include <openGLPlotLive/src/shadedLines/ShadedLine2D2CircularVecs.h>
 
 
 class ThrottleBrakeTraceView : public GLPL::Window {
@@ -30,11 +30,10 @@ private:
                     std::vector<float>* brakePt);
 
     // Data
-    GLPL::Shader plot2dShader;
-    GLPL::Shader textShader;
+    float opacityRatio = 0.5;
     std::shared_ptr<GLPL::Plot> myplot;
-    std::shared_ptr<GLPL::Line2D2CircularVecs> lineThrottle;
-    std::shared_ptr<GLPL::Line2D2CircularVecs> lineBrake;
+    std::shared_ptr<GLPL::ShadedLine2D2CircularVecs> lineThrottle;
+    std::shared_ptr<GLPL::ShadedLine2D2CircularVecs> lineBrake;
 
 };
 

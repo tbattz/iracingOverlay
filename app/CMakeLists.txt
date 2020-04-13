@@ -38,3 +38,6 @@ add_subdirectory(throttleBrakeTrace)
 
 # Link required libraries
 target_link_libraries(${PROJECT_NAME} PRIVATE openGLPlotLive ${LIBS} winmm ws2_32)
+
+# Copy Shader files to build directory
+add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/../openGLPlotLive/Shaders $<TARGET_FILE_DIR:${PROJECT_NAME}>/Shaders)
