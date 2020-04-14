@@ -31,7 +31,7 @@ VariablePlotController::VariablePlotController(std::shared_ptr<IRData> irData, u
 
 void VariablePlotController::updateData() {
     // Update the vectors
-    model->setSessionTime(irData->getSessionTime());
+    model->setSessionTime(irData->getVarFloat(sessionTimeStr, 0));
     for(unsigned int i=0; i < varList.size(); i++) {
         switch(varList[i].first) {
             case IR_INT: {
@@ -60,4 +60,13 @@ void VariablePlotController::drawWindow() {
 
 GLFWwindow* VariablePlotController::getWindow() {
     return view->getWindow();
+}
+
+void VariablePlotController::showWindow() {
+    return view->showWindow();
+}
+
+void VariablePlotController::hideWindow() {
+    return view->hideWindow();
+
 }

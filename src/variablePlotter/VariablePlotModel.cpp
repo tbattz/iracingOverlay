@@ -5,29 +5,17 @@
 #include <iostream>
 #include "VariablePlotModel.h"
 
-VariablePlotModel::VariablePlotModel(unsigned int maxVars, unsigned int maxVectorLen) {
+VariablePlotModel::VariablePlotModel(unsigned int maxVars, unsigned int maxVectorLen) : CommonModel(maxVectorLen) {
     this->maxVectorLen = maxVectorLen;
     this->maxVars = maxVars;
 
     // Reserve vector sizes
     sessionTimeHist.reserve(maxVectorLen);
-    vectorHist.reserve(maxVars); // Maximum 10 lines before vector pointers move and causes crash
+    vectorHist.reserve(this->maxVars); // Maximum x lines before vector pointers move and causes crash
     for(unsigned int i=0; i<maxVars; i++) {
         std::vector<float> newVec;
         vectorHist.push_back(newVec);
         vectorHist[i].reserve(maxVectorLen);
-    }
-}
-
-void VariablePlotModel::setSessionTime(float newSessionTime) {
-    if(sessionStartTime < 0) {
-        sessionStartTime = newSessionTime;
-    }
-    // Only add new elements if the vector isn't full
-    if(sessionTimeHist.size() < sessionTimeHist.capacity()) {
-        sessionTimeHist.push_back(newSessionTime - sessionStartTime);
-    } else {
-        sessionTimeHist.at(currWriteIndex) = newSessionTime - sessionStartTime;
     }
 }
 
@@ -38,10 +26,6 @@ void VariablePlotModel::setVariable(float newValue, unsigned int varIndex) {
     } else {
         vectorHist[varIndex].at(currWriteIndex) = newValue;
     }
-}
-
-std::vector<float>* VariablePlotModel::getSessionTimePt() {
-    return &sessionTimeHist;
 }
 
 std::vector<float>* VariablePlotModel::getVarPointer(unsigned int varIndex) {
@@ -55,25 +39,4 @@ std::vector<std::vector<float>*> VariablePlotModel::getVarPointers() {
     }
     return varPt;
 }
-
-void VariablePlotModel::incrementIndex() {
-    // Update write index
-    this->currWriteIndex += 1;
-    if(currWriteIndex > maxVectorLen - 1) {
-        currWriteIndex = 0;
-    }
-    // Update start index
-    if(sessionTimeHist.size() < maxVectorLen ) {
-        currStartIndex = 0;
-    } else {
-        currStartIndex = currWriteIndex;
-    }
-}
-
-unsigned int VariablePlotModel::getCurrStartIndex() {
-    return (unsigned int)(this->currStartIndex);
-}
-
-
-
 

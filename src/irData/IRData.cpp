@@ -55,13 +55,9 @@ void IRData::setupTiming() {
 }
 
 void IRData::updateData() {
-    bool foundData = false;
     switch(mode) {
         case MEMFILE: {
-            foundData = client.waitForData(timeout);
-            if (foundData) {
-                IRData::parseClientData();
-            }
+            client.waitForData(timeout);
             break;
         }
         case IBTFILE: {
@@ -70,10 +66,7 @@ void IRData::updateData() {
                 diskClient.openFile(path);
             }
             if(diskClient.isFileOpen()) {
-                foundData = diskClient.getNextData();
-            }
-            if(foundData) {
-                IRData::parseDiskClientData();
+                diskClient.getNextData();
             }
             break;
         }
@@ -81,22 +74,6 @@ void IRData::updateData() {
             std::cout << "Undefined IRData mode!" << std::endl;
         }
     }
-}
-
-void IRData::parseClientData() {
-    sessionTime = client.getVarFloat("SessionTime", 0);
-    lapDist = client.getVarDouble("LapDist", 0);
-    throttle = client.getVarFloat("Throttle", 0);
-    brake = client.getVarFloat("Brake", 0);
-    //std::cout << throttle << std::endl;
-}
-
-void IRData::parseDiskClientData() {
-    sessionTime = diskClient.getVarDouble("SessionTime", 0);
-    lapDist = diskClient.getVarFloat("LapDist", 0);
-    throttle = diskClient.getVarFloat("Throttle", 0);
-    brake = diskClient.getVarFloat("Brake", 0);
-    //std::cout << throttle << std::endl;
 }
 
 float IRData::getVarFloat(const char* varName, int entry) {
@@ -157,20 +134,35 @@ int IRData::getTimeout() {
     return this->timeout;
 }
 
-float IRData::getSessionTime() {
-    return sessionTime;
+
+
+bool IRData::isConnected() {
+    switch(mode) {
+        case MEMFILE: {
+            return client.isConnected();
+        }
+        case IBTFILE: {
+            return diskClient.isFileOpen();
+        }
+        default: {
+            return false;
+        }
+    }
 }
 
-float IRData::getLapDist() {
-    return lapDist;
-}
-
-float IRData::getThrottle() {
-    return throttle;
-}
-
-float IRData::getBrake() {
-    return brake;
+bool IRData::isCarOnTrack() {
+    switch(mode) {
+        case MEMFILE: {
+            return (client.getVarInt(isCarOnTrackStr, 0) != 0);
+        }
+        case IBTFILE: {
+            return (diskClient.getVarInt(isCarOnTrackStr, 0) != 0);
+            break;
+        }
+        default: {
+           return false;
+        }
+    }
 }
 
 void IRData::endSession() {

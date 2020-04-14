@@ -23,6 +23,8 @@ public:
     void updateData();
     void drawWindow();
     GLFWwindow* getWindow();
+    void showWindow();
+    void hideWindow();
 
 private:
     // Functions

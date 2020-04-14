@@ -27,8 +27,10 @@ add_executable(${PROJECT_NAME} irOverlay.cpp
 
 # Add subdirectories
 add_subdirectory(irData)
+add_subdirectory(common)
 add_subdirectory(throttleBrakeTrace)
 add_subdirectory(variablePlotter)
+add_subdirectory(trackMap)
 
 # Link required libraries
 target_link_libraries(${PROJECT_NAME} PRIVATE openGLPlotLive ${LIBS} winmm ws2_32)

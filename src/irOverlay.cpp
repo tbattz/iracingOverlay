@@ -13,7 +13,6 @@
 #include <GLFW/glfw3.h>
 
 // Standard Includes
-#include <memory>
 #include <thread>
 #include <chrono>
 
@@ -22,6 +21,7 @@
 #include <openGLPlotLive/src/rendering/fonts.h>
 #include <src/throttleBrakeTrace/ThrottleBrakeTraceController.h>
 #include <src/variablePlotter/VariablePlotController.h>
+#include <src/trackMap/TrackMapController.h>
 
 
 int main(int argc, char* argv[]) {
@@ -36,9 +36,6 @@ int main(int argc, char* argv[]) {
         irData = std::make_shared<IRData>(filepath);
     }
 
-
-
-
     // Create ThrottleBrakeTrace Controller
     ThrottleBrakeTraceController throttleBrakeTraceController = ThrottleBrakeTraceController(irData, 10);
 
@@ -47,19 +44,47 @@ int main(int argc, char* argv[]) {
                                                             {IR_INT, "Gear"}};
     VariablePlotController variablePlotController = VariablePlotController(irData, 10, varList);
 
+    // Create Track Map Controller
+    /*std::vector<std::pair<IRDataType, const char*>> varList2{{IR_FLOAT, "VelocityX"},
+                                                             {IR_FLOAT, "VelocityY"},
+                                                             {IR_FLOAT, "VelocityZ"}}*/
+    std::vector<std::pair<IRDataType, const char*>> varList2{{IR_FLOAT, "Roll"},
+                                                             {IR_FLOAT, "Pitch"},
+                                                             {IR_FLOAT, "YawNorth"}}; // Only need YawNorth
+    //std::vector<std::pair<IRDataType, const char*>> varList2{{IR_FLOAT, "CarIdxEstTime"}};
+
+    TrackMapController trackMapController = TrackMapController(irData, 120, varList2);
 
 
     // Check for no keystrokes
+    bool windowsShown = true;
     while(!glfwWindowShouldClose(throttleBrakeTraceController.getWindow())) {
         // Update data
         irData->updateData();
         throttleBrakeTraceController.updateData();
         variablePlotController.updateData();
+        trackMapController.updateData();
 
-        // Update Windows
-        throttleBrakeTraceController.drawWindow();
-        variablePlotController.drawWindow();
-
+        // Show if car on track or not connected to setup placement of windows
+        if(irData->isCarOnTrack() || !irData->isConnected()) {
+            if(!windowsShown) {
+                // Reshow the windows
+                throttleBrakeTraceController.showWindow();
+                variablePlotController.showWindow();
+                trackMapController.showWindow();
+                windowsShown = true;
+            }
+            // Update Windows
+            throttleBrakeTraceController.drawWindow();
+            variablePlotController.drawWindow();
+            trackMapController.drawWindow();
+        } else {
+            // Hide the windows
+            throttleBrakeTraceController.hideWindow();
+            variablePlotController.hideWindow();
+            trackMapController.hideWindow();
+            windowsShown = false;
+        }
         // Sleep for a little
         std::this_thread::sleep_for (std::chrono::milliseconds(10));
     }

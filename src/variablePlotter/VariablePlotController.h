@@ -14,11 +14,6 @@
 #include "VariablePlotView.h"
 
 
-enum IRDataType {
-    IR_INT,
-    IR_FLOAT,
-    IR_DOUBLE
-};
 
 
 class VariablePlotController : public IDataReceiver {
@@ -30,9 +25,10 @@ public:
     void updateData();
     void drawWindow();
     GLFWwindow* getWindow();
+    void showWindow();
+    void hideWindow();
 
 private:
-
     // Data
     std::vector<std::pair<IRDataType, const char*>> varList;
     std::shared_ptr<IRData> irData;

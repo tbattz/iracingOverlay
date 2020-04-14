@@ -15,11 +15,18 @@
 #include <vector>
 
 
+enum IRDataType {
+    IR_INT,
+    IR_FLOAT,
+    IR_DOUBLE
+};
 
 enum IRDataMode {
     MEMFILE,
     IBTFILE
 };
+
+
 
 class IRData {
 public:
@@ -30,16 +37,12 @@ public:
 
     // Functions
     void updateData();
-    void parseClientData();
-    void parseDiskClientData();
     float getVarFloat(const char* varName, int entry);
     double getVarDouble(const char* varName, int entry);
     int getVarInt(const char* varName, int entry);
     int getTimeout();
-    float getSessionTime();
-    float getLapDist();
-    float getThrottle();
-    float getBrake();
+    bool isConnected();
+    bool isCarOnTrack();
     void endSession();
 
 private:
@@ -47,18 +50,15 @@ private:
     void setupTiming();
 
     // Data
+    // Strings
+    const char* isCarOnTrackStr = "IsOnTrack";
     // Setup
     IRDataMode mode;
-    unsigned int timeout = 16; // ms
+    int timeout = 16; // ms
     const char* path;
     // Clients
     irsdkClient& client = irsdkClient::instance();
     irsdkDiskClient diskClient = irsdkDiskClient();
-    // Variables
-    float sessionTime = 0;
-    float lapDist = 0;
-    float throttle = 0;
-    float brake = 0;
 };
 
 
