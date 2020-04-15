@@ -23,6 +23,7 @@ ThrottleBrakeTraceController::ThrottleBrakeTraceController(std::shared_ptr<IRDat
                 model->getSessionTimePt(),
                 model->getThrottlePt(),
                 model->getBrakePt(),
+                model->getDeltaPt(),
                 pastSeconds);
 
 }
@@ -33,11 +34,12 @@ void ThrottleBrakeTraceController::updateData() {
     model->setLapDist(irData->getVarDouble(lapDist, 0));
     model->setThrottle(irData->getVarFloat(throttleStr, 0));
     model->setBrake(irData->getVarFloat(brakeStr, 0));
+    model->setDelta(irData->getVarFloat(deltaStr, 0));
     model->incrementIndex();
 }
 
 void ThrottleBrakeTraceController::drawWindow() {
-    view->drawView(model->getCurrStartIndex());
+    view->drawView(model->getCurrStartIndex(), model->getLastDelta());
 }
 
 GLFWwindow* ThrottleBrakeTraceController::getWindow() {

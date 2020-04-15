@@ -40,8 +40,8 @@ int main(int argc, char* argv[]) {
     ThrottleBrakeTraceController throttleBrakeTraceController = ThrottleBrakeTraceController(irData, 10);
 
     // Create Variable Controller
-    std::vector<std::pair<IRDataType, const char*>> varList{{IR_FLOAT, "LapDeltaToBestLap"},
-                                                            {IR_INT, "Gear"}};
+    std::vector<std::pair<IRDataType, const char*>> varList{{IR_FLOAT, "LapDeltaToBestLap_DD"}};
+                                                            //{IR_INT, "Gear"}};
     VariablePlotController variablePlotController = VariablePlotController(irData, 10, varList);
 
     // Create Track Map Controller
@@ -70,14 +70,14 @@ int main(int argc, char* argv[]) {
             if(!windowsShown) {
                 // Reshow the windows
                 throttleBrakeTraceController.showWindow();
-                variablePlotController.showWindow();
-                trackMapController.showWindow();
+                //variablePlotController.showWindow();
+                //trackMapController.showWindow();
                 windowsShown = true;
             }
             // Update Windows
             throttleBrakeTraceController.drawWindow();
-            variablePlotController.drawWindow();
-            trackMapController.drawWindow();
+            //variablePlotController.drawWindow();
+            //trackMapController.drawWindow();
         } else {
             // Hide the windows
             throttleBrakeTraceController.hideWindow();

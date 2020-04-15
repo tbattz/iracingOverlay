@@ -23,15 +23,20 @@ public:
     void setLapDist(float newLapDist);
     void setThrottle(float newThrottle);
     void setBrake(float newBrake);
+    void setDelta(float newDelta);
     std::vector<float>* getLapDistPt();
     std::vector<float>* getThrottlePt();
     std::vector<float>* getBrakePt();
+    std::vector<float>* getDeltaPt();
+    float getLastDelta();
 
 private:
     // Data
+    float lastDelta = 0;
     std::vector<float> lapDistHist;
     std::vector<float> throttleHist;
     std::vector<float> brakeHist;
+    std::vector<float> deltaHist;
 };
 
 

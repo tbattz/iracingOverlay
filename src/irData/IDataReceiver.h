@@ -18,6 +18,7 @@ protected:
     const char* throttleStr = "Throttle";
     const char* brakeStr = "Brake";
     const char* lapDist = "LapDist";
+    const char* deltaStr = "LapDeltaToBestLap_DD";
     const char* velXStr = "VelocityX";
     const char* velYStr = "VelocityY";
     const char* velZStr = "VelocityZ";

@@ -11,6 +11,7 @@ ThrottleBrakeTraceModel::ThrottleBrakeTraceModel(unsigned int maxVectorLen) : Co
     lapDistHist.reserve(maxVectorLen);
     throttleHist.reserve(maxVectorLen);
     brakeHist.reserve(maxVectorLen);
+    deltaHist.reserve(maxVectorLen);
 }
 
 void ThrottleBrakeTraceModel::setLapDist(float newLapDist) {
@@ -40,6 +41,16 @@ void ThrottleBrakeTraceModel::setBrake(float newBrake) {
     }
 }
 
+void ThrottleBrakeTraceModel::setDelta(float newDelta) {
+    // Only add new elements if the vector isn't full
+    if(deltaHist.size() < deltaHist.capacity()) {
+        deltaHist.push_back(newDelta);
+    } else {
+        deltaHist.at(currWriteIndex) = newDelta;
+    }
+    lastDelta = newDelta;
+}
+
 std::vector<float>* ThrottleBrakeTraceModel::getLapDistPt() {
     return &lapDistHist;
 }
@@ -51,4 +62,14 @@ std::vector<float>* ThrottleBrakeTraceModel::getThrottlePt() {
 std::vector<float>* ThrottleBrakeTraceModel::getBrakePt() {
     return &brakeHist;
 }
+
+std::vector<float> *ThrottleBrakeTraceModel::getDeltaPt() {
+    return &deltaHist;
+}
+
+float ThrottleBrakeTraceModel::getLastDelta() {
+    return lastDelta;
+}
+
+
 

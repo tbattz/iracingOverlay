@@ -32,6 +32,7 @@ void VariablePlotView::drawView(unsigned int currStartIndex) {
     }
     if(!lines.empty()) {
         myplot->getAxes()->updateXAxesLimits(lines[0]->getMinMax()[1] - (float) pastSeconds, lines[0]->getMinMax()[1]);
+        myplot->getAxes()->updateYAxesLimits(-2, 2);
     }
 
     // Draw Window
