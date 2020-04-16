@@ -31,6 +31,7 @@ add_subdirectory(common)
 add_subdirectory(throttleBrakeTrace)
 add_subdirectory(variablePlotter)
 add_subdirectory(trackMap)
+add_subdirectory(wheelInput)
 
 # Link required libraries
 target_link_libraries(${PROJECT_NAME} PRIVATE openGLPlotLive ${LIBS} winmm ws2_32)

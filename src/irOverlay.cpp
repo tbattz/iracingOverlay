@@ -25,7 +25,7 @@
 
 
 int main(int argc, char* argv[]) {
-    std::cout << "Starting IRacingOverlay Version 0.2." << std::endl;
+    std::cout << "Starting IRacingOverlay Version 0.2" << std::endl;
 
     // Create IRData
     std::shared_ptr<IRData> irData;
