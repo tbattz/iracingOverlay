@@ -68,6 +68,11 @@ installDependiciesWindows-part2.bat
 
 
 # Compiling
+Firstly ensure you have checked out the submodules.
+```
+git submodule init
+git submodule update
+```
 A CMakeLists.txt file is included for compiling with Cmake. This should work for systems running Ubuntu. Navigate to the build directory and remove any old CMakeFiles
 ```
 cd build
