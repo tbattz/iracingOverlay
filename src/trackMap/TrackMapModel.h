@@ -17,7 +17,7 @@
 #include <src/common/CommonModel.h>
 
 
-class TrackMapModel : public CommonModel {
+class TrackMapModel : public CommonModel<float> {
 public:
     // Constructor
     TrackMapModel(unsigned int maxVectorLen);
@@ -31,9 +31,6 @@ public:
     float getPrevYaw();
     glm::vec3 getPrevVelocity();
     glm::vec3 getPrevPosition();
-    std::vector<glm::vec3>* getVelocityPt();
-    std::vector<float>* getYawPt();
-    std::vector<glm::dvec3>* getPositionPt();
 
 private:
     // Data
@@ -41,9 +38,6 @@ private:
     float prevYaw = 0.0;
     glm::vec3 prevVelocity = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 prevPosition = glm::vec3(0.0f, 0.0f, 0.0f);
-    std::vector<glm::vec3> velocityHist;
-    std::vector<float> yawHist;
-    std::vector<glm::dvec3> positionHist = {glm::dvec3(0.0f, 0.0f, 0.0f)};
 };
 
 

@@ -5,33 +5,32 @@
 #ifndef IRACINGTRACEOVERLAY_PROJ_THROTTLEBRAKETRACEVIEW_H
 #define IRACINGTRACEOVERLAY_PROJ_THROTTLEBRAKETRACEVIEW_H
 
+// Standard Includes
+#include <unordered_map>
 
+// OpenGLPlotLive Includes
 #include <openGLPlotLive/src/rendering/shader.h>
 #include <openGLPlotLive/src/window/FramelessDraggableWindow.h>
 #include <openGLPlotLive/src/plot/plot.h>
 #include <openGLPlotLive/src/lines/Line2D2CircularVecsPosNeg.h>
 #include <openGLPlotLive/src/shadedLines/ShadedLine2D2CircularVecs.h>
 
+// Project Includes
+#include <src/irData/IDataStrings.h>
 
-class ThrottleBrakeTraceView : public GLPL::FramelessDraggableWindow {
+
+class ThrottleBrakeTraceView : public GLPL::FramelessDraggableWindow, IDataStrings {
 public:
     // Constructor
-    ThrottleBrakeTraceView(std::vector<float>* sessionTimePt,
-                           std::vector<float>* throttlePt,
-                           std::vector<float>* brakePt,
-                           std::vector<float>* deltaPt,
-                           unsigned int pastSeconds);
+    ThrottleBrakeTraceView(std::unordered_map<VariableEnum, std::vector<float>*> varHistoryFloatPts, unsigned int pastSeconds);
 
     // Functions
-    void drawView(unsigned int currStartIndex, float lastDelta);
+    void drawView(unsigned int currStartIndex);
 
 private:
     // Functions
     void setupPlot();
-    void setupLines(std::vector<float>* sessionTimePt,
-                    std::vector<float>* throttlePt,
-                    std::vector<float>* brakePt,
-                    std::vector<float>* deltaPt);
+    void setupLines(std::unordered_map<VariableEnum, std::vector<float>*> varHistoryFloatPts);
 
     // Data
     float opacityRatio = 0.5;

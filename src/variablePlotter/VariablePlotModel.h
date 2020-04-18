@@ -12,22 +12,20 @@
 
 // Project Includes
 #include "../common/CommonModel.h"
+#include "VarSetup.h"
 
 
-class VariablePlotModel : public CommonModel {
+class VariablePlotModel : public CommonModel<float>, public CommonModel<double>, public CommonModel<int> {
 public:
     // Constructor
-    VariablePlotModel(unsigned int maxVars, unsigned int maxVectorLen);
+    VariablePlotModel(unsigned int maxVectorLen, std::vector<VarSetup> varList);
 
     // Functions
-    void setVariable(float newValue, unsigned int varIndex);
-    std::vector<float>* getVarPointer(unsigned int varIndex);
-    std::vector<std::vector<float>*> getVarPointers();
+    void setupVarList();
 
 private:
     // Data
-    unsigned int maxVars = 10;
-    std::vector<std::vector<float>> vectorHist;
+    std::vector<VarSetup> varList;
 
 };
 

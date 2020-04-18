@@ -4,71 +4,15 @@
 
 #include "ThrottleBrakeTraceModel.h"
 
-ThrottleBrakeTraceModel::ThrottleBrakeTraceModel(unsigned int maxVectorLen) : CommonModel(maxVectorLen) {
-    this->maxVectorLen = maxVectorLen;
+ThrottleBrakeTraceModel::ThrottleBrakeTraceModel(unsigned int maxVectorLen) :
+        CommonModel<float>(maxVectorLen), CommonModel<double>(maxVectorLen) {
 
     // Reserve vector sizes
-    lapDistHist.reserve(maxVectorLen);
-    throttleHist.reserve(maxVectorLen);
-    brakeHist.reserve(maxVectorLen);
-    deltaHist.reserve(maxVectorLen);
-}
-
-void ThrottleBrakeTraceModel::setLapDist(float newLapDist) {
-    // Only add new elements if the vector isn't full
-    if(lapDistHist.size() < lapDistHist.capacity()) {
-        lapDistHist.push_back(newLapDist);
-    } else {
-        lapDistHist.at(currWriteIndex) = newLapDist;
-    }
-}
-
-void ThrottleBrakeTraceModel::setThrottle(float newThrottle) {
-    // Only add new elements if the vector isn't full
-    if(throttleHist.size() < throttleHist.capacity()) {
-        throttleHist.push_back(newThrottle);
-    } else {
-        throttleHist.at(currWriteIndex) = newThrottle;
-    }
-}
-
-void ThrottleBrakeTraceModel::setBrake(float newBrake) {
-    // Only add new elements if the vector isn't full
-    if(brakeHist.size() < brakeHist.capacity()) {
-        brakeHist.push_back(newBrake);
-    } else {
-        brakeHist.at(currWriteIndex) = newBrake;
-    }
-}
-
-void ThrottleBrakeTraceModel::setDelta(float newDelta) {
-    // Only add new elements if the vector isn't full
-    if(deltaHist.size() < deltaHist.capacity()) {
-        deltaHist.push_back(newDelta);
-    } else {
-        deltaHist.at(currWriteIndex) = newDelta;
-    }
-    lastDelta = newDelta;
-}
-
-std::vector<float>* ThrottleBrakeTraceModel::getLapDistPt() {
-    return &lapDistHist;
-}
-
-std::vector<float>* ThrottleBrakeTraceModel::getThrottlePt() {
-    return &throttleHist;
-}
-
-std::vector<float>* ThrottleBrakeTraceModel::getBrakePt() {
-    return &brakeHist;
-}
-
-std::vector<float> *ThrottleBrakeTraceModel::getDeltaPt() {
-    return &deltaHist;
-}
-
-float ThrottleBrakeTraceModel::getLastDelta() {
-    return lastDelta;
+    CommonModel<float>::addVar(SessionTime);
+    CommonModel<float>::addVar(LapDist);
+    CommonModel<float>::addVar(Throttle);
+    CommonModel<float>::addVar(Brake);
+    CommonModel<float>::addVar(LapDeltaToBestLap_DD);
 }
 
 

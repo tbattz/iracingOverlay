@@ -19,27 +19,21 @@ ThrottleBrakeTraceController::ThrottleBrakeTraceController(std::shared_ptr<IRDat
         model = std::make_shared<ThrottleBrakeTraceModel>(maxCount);
 
         // Create view
-        view = std::make_shared<ThrottleBrakeTraceView>(
-                model->getSessionTimePt(),
-                model->getThrottlePt(),
-                model->getBrakePt(),
-                model->getDeltaPt(),
-                pastSeconds);
-
+        view = std::make_shared<ThrottleBrakeTraceView>(model->CommonModel<float>::getVarHistoryPts(), pastSeconds);
 }
 
 void ThrottleBrakeTraceController::updateData() {
     // Update the vectors
-    model->setSessionTime(irData->getVarFloat(sessionTimeStr, 0));
-    model->setLapDist(irData->getVarDouble(lapDist, 0));
-    model->setThrottle(irData->getVarFloat(throttleStr, 0));
-    model->setBrake(irData->getVarFloat(brakeStr, 0));
-    model->setDelta(irData->getVarFloat(deltaStr, 0));
-    model->incrementIndex();
+    model->CommonModel<float>::setVar(SessionTime, irData->getVarFloat(sessionTimeStr, 0));
+    model->CommonModel<float>::setVar(LapDist, irData->getVarFloat(lapDist, 0));
+    model->CommonModel<float>::setVar(Throttle, irData->getVarFloat(throttleStr, 0));
+    model->CommonModel<float>::setVar(Brake, irData->getVarFloat(brakeStr, 0));
+    model->CommonModel<float>::setVar(LapDeltaToBestLap_DD, irData->getVarFloat(deltaStr, 0));
+    model->CommonModel<float>::incrementIndex();
 }
 
 void ThrottleBrakeTraceController::drawWindow() {
-    view->drawView(model->getCurrStartIndex(), model->getLastDelta());
+    view->drawView(model->CommonModel<float>::getCurrStartIndex());
 }
 
 GLFWwindow* ThrottleBrakeTraceController::getWindow() {

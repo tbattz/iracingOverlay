@@ -22,6 +22,7 @@
 #include <src/throttleBrakeTrace/ThrottleBrakeTraceController.h>
 #include <src/variablePlotter/VariablePlotController.h>
 #include <src/trackMap/TrackMapController.h>
+#include <src/variablePlotter/VarSetup.h>
 
 
 int main(int argc, char* argv[]) {
@@ -40,20 +41,12 @@ int main(int argc, char* argv[]) {
     ThrottleBrakeTraceController throttleBrakeTraceController = ThrottleBrakeTraceController(irData, 10);
 
     // Create Variable Controller
-    std::vector<std::pair<IRDataType, const char*>> varList{{IR_FLOAT, "LapDeltaToBestLap_DD"}};
-                                                            //{IR_INT, "Gear"}};
+    std::vector<VarSetup> varList = {{IR_FLOAT, "LapDeltaToBestLap_DD", IDataStrings::LapDeltaToBestLap_DD},
+                                     {IR_INT, "Gear", IDataStrings::Gear}};
     VariablePlotController variablePlotController = VariablePlotController(irData, 10, varList);
 
     // Create Track Map Controller
-    /*std::vector<std::pair<IRDataType, const char*>> varList2{{IR_FLOAT, "VelocityX"},
-                                                             {IR_FLOAT, "VelocityY"},
-                                                             {IR_FLOAT, "VelocityZ"}}*/
-    std::vector<std::pair<IRDataType, const char*>> varList2{{IR_FLOAT, "Roll"},
-                                                             {IR_FLOAT, "Pitch"},
-                                                             {IR_FLOAT, "YawNorth"}}; // Only need YawNorth
-    //std::vector<std::pair<IRDataType, const char*>> varList2{{IR_FLOAT, "CarIdxEstTime"}};
-
-    TrackMapController trackMapController = TrackMapController(irData, 120, varList2);
+    TrackMapController trackMapController = TrackMapController(irData, 120);
 
 
     // Check for no keystrokes
@@ -70,14 +63,14 @@ int main(int argc, char* argv[]) {
             if(!windowsShown) {
                 // Reshow the windows
                 throttleBrakeTraceController.showWindow();
-                //variablePlotController.showWindow();
-                //trackMapController.showWindow();
+                variablePlotController.showWindow();
+                trackMapController.showWindow();
                 windowsShown = true;
             }
             // Update Windows
             throttleBrakeTraceController.drawWindow();
-            //variablePlotController.drawWindow();
-            //trackMapController.drawWindow();
+            variablePlotController.drawWindow();
+            trackMapController.drawWindow();
         } else {
             // Hide the windows
             throttleBrakeTraceController.hideWindow();

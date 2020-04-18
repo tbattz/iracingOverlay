@@ -4,11 +4,12 @@
 
 
 
+#include <openGLPlotLive/src/lines/Line2D2CircularVecs.h>
 #include "TrackMapView.h"
 
 
 
-TrackMapView::TrackMapView(std::vector<glm::dvec3> *positionPt, unsigned int pastSeconds)
+TrackMapView::TrackMapView(std::unordered_map<IDataStrings::VariableEnum, std::vector<float>*> varHistoryFloatPts, unsigned int pastSeconds)
         : GLPL::FramelessDraggableWindow(800, 600, true, true) {
         // Set background color
         this->setBackgroundColor(0.25f, 0.25f, 0.25f, 0.75f);
@@ -18,7 +19,7 @@ TrackMapView::TrackMapView(std::vector<glm::dvec3> *positionPt, unsigned int pas
         TrackMapView::setupPlot();
 
         // Create lines
-        TrackMapView::setupLines(positionPt);
+        TrackMapView::setupLines(varHistoryFloatPts);
 
 }
 
@@ -26,8 +27,8 @@ void TrackMapView::drawView(unsigned int currStartIndex) {
     // Pre-loop draw
     preLoopDraw(true);
 
-    // Update data
-    linePosition->updateInternalData();
+    // Update internal data
+    linePosition->updateInternalData(currStartIndex);
 
     // Draw Window
     myplot->Draw();
@@ -47,9 +48,10 @@ void TrackMapView::setupPlot() {
 }
 
 void
-TrackMapView::setupLines(std::vector<glm::dvec3> *positionPt) {
+TrackMapView::setupLines(std::unordered_map<IDataStrings::VariableEnum, std::vector<float>*> varHistoryFloatPts) {
     // Setup lines
-    // TODO - Check if casting glm::dvec3 and glm::vec3 causes an issue
-    linePosition = std::make_shared<GLPL::Line2DVecGLMV3>(positionPt, 0, 1);
+    std::vector<float>* posXPt = varHistoryFloatPts.at(IDataStrings::PositionX);
+    std::vector<float>* posYPt = varHistoryFloatPts.at(IDataStrings::PositionY);
+    linePosition = std::make_shared<GLPL::Line2D2CircularVecs<float, float>>(posXPt, posYPt);
     myplot->addLine(linePosition);
 }

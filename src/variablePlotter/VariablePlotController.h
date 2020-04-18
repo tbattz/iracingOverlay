@@ -5,21 +5,22 @@
 #ifndef IRACINGTRACEOVERLAY_PROJ_VARIABLEPLOTCONTROLLER_H
 #define IRACINGTRACEOVERLAY_PROJ_VARIABLEPLOTCONTROLLER_H
 
+// Standard Includes
+#include <memory>
 
 // Project Includes
 #include <src/irData/IDataReceiver.h>
 #include <src/irData/IRData.h>
-#include <memory>
+
 #include "VariablePlotModel.h"
 #include "VariablePlotView.h"
-
-
+#include "VarSetup.h"
 
 
 class VariablePlotController : public IDataReceiver {
 public:
     // Constructor
-    VariablePlotController(std::shared_ptr<IRData> irData, unsigned int pastSeconds, std::vector<std::pair<IRDataType, const char*>> varList);
+    VariablePlotController(std::shared_ptr<IRData> irData, unsigned int pastSeconds, std::vector<VarSetup> varList);
 
     // Functions
     void updateData();
@@ -30,7 +31,7 @@ public:
 
 private:
     // Data
-    std::vector<std::pair<IRDataType, const char*>> varList;
+    std::vector<VarSetup> varList;
     std::shared_ptr<IRData> irData;
     
     // Model

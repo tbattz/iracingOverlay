@@ -5,9 +5,14 @@
 
 #include "VariablePlotView.h"
 
+#include <utility>
 
 
-VariablePlotView::VariablePlotView(std::vector<float>* sessionTimePt, std::vector<std::vector<float>*> varPts, unsigned int pastSeconds)
+
+VariablePlotView::VariablePlotView(std::unordered_map<VariableEnum, std::vector<float>*> varHistoryFloatPts,
+                                   std::unordered_map<VariableEnum, std::vector<double>*> varHistoryDoublePts,
+                                   std::unordered_map<VariableEnum, std::vector<int>*> varHistoryIntPts,
+                                   unsigned int pastSeconds)
         : GLPL::FramelessDraggableWindow(800, 600, true, true) {
         // Set background color
         this->setBackgroundColor(0.25f, 0.25f, 0.25f, 0.75f);
@@ -17,7 +22,7 @@ VariablePlotView::VariablePlotView(std::vector<float>* sessionTimePt, std::vecto
         VariablePlotView::setupPlot();
 
         // Create lines
-        VariablePlotView::setupLines(sessionTimePt, varPts);
+        VariablePlotView::setupLines(std::move(varHistoryFloatPts), std::move(varHistoryDoublePts), std::move(varHistoryIntPts));
 
 }
 
@@ -26,13 +31,27 @@ void VariablePlotView::drawView(unsigned int currStartIndex) {
     preLoopDraw(true);
 
     // Update data
-    for(unsigned int i=0; i < lines.size(); i++) {
-        if(lines[i])
-        lines[i]->updateInternalData(currStartIndex);
+    // Ints
+    for(unsigned int i=0; i < linesInt.size(); i++) {
+        if(linesInt[i]) {
+            linesInt[i]->updateInternalData(currStartIndex);
+        }
     }
-    if(!lines.empty()) {
-        myplot->getAxes()->updateXAxesLimits(lines[0]->getMinMax()[1] - (float) pastSeconds, lines[0]->getMinMax()[1]);
-        myplot->getAxes()->updateYAxesLimits(-2, 2);
+    // Floats
+    for(unsigned int i=0; i < linesFloat.size(); i++) {
+        if(linesFloat[i]) {
+            linesFloat[i]->updateInternalData(currStartIndex);
+        }
+    }
+    // Doubles
+    for(unsigned int i=0; i < linesDouble.size(); i++) {
+        if(linesDouble[i]) {
+            linesDouble[i]->updateInternalData(currStartIndex);
+        }
+
+    }
+    if(!linesFloat.empty()) {
+        myplot->getAxes()->updateXAxesLimits(linesFloat[0]->getMinMax()[1] - (float) pastSeconds, linesFloat[0]->getMinMax()[1]);
     }
 
     // Draw Window
@@ -50,13 +69,36 @@ void VariablePlotView::setupPlot() {
     myplot->getAxes()->setPositionSize(0.0, 0.0, 1.0, 1.0);
 }
 
-void VariablePlotView::setupLines(std::vector<float>* sessionTimePt, std::vector<std::vector<float>*> varPts) {
+template<typename T, typename U>
+void VariablePlotView::setupLine(std::vector<std::shared_ptr<GLPL::Line2D2CircularVecs<T, U>>>* linesType,
+                                 std::vector<float>* sessionTimePt,
+                                 std::unordered_map<VariableEnum, std::vector<U>*> varHistoryTPts) {
     // Setup lines
-    for(unsigned int i=0; i<varPts.size(); i++) {
-        lines.push_back(std::make_shared<GLPL::Line2D2CircularVecs>(sessionTimePt, varPts[i]));
-        lines[i]->setLineColour(lineColors[i]);
+    int i = -1;
+    for(std::pair<VariableEnum, std::vector<U>*> element : varHistoryTPts) {
+        if (element.first != SessionTime) {
+            i += 1;
+            lineCount += 1;
+            linesType->push_back(std::make_shared<GLPL::Line2D2CircularVecs<T, U>>(sessionTimePt, element.second));
+            linesType->at(i)->setLineColour(lineColors[lineCount]);
 
-        // Add lines to axes
-        myplot->addLine(lines[i]);
+            // Add lines to axes
+            myplot->addLine(linesType->at(i));
+        }
     }
 }
+
+void VariablePlotView::setupLines(std::unordered_map<VariableEnum, std::vector<float>*> varHistoryFloatPts,
+                                  std::unordered_map<VariableEnum, std::vector<double>*> varHistoryDoublePts,
+                                  std::unordered_map<VariableEnum, std::vector<int>*> varHistoryIntPts) {
+
+    std::vector<float>* sessionTimePt = varHistoryFloatPts.at(SessionTime);
+
+    // Setup lines
+    VariablePlotView::setupLine(&linesInt, sessionTimePt, varHistoryIntPts);
+    VariablePlotView::setupLine(&linesFloat, sessionTimePt, varHistoryFloatPts);
+    VariablePlotView::setupLine(&linesDouble, sessionTimePt, varHistoryDoublePts);
+}
+
+
+

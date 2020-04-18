@@ -5,13 +5,11 @@
 
 #include "ThrottleBrakeTraceView.h"
 
+#include <utility>
 
 
-ThrottleBrakeTraceView::ThrottleBrakeTraceView(std::vector<float>* sessionTimePt,
-                                               std::vector<float>* throttlePt,
-                                               std::vector<float>* brakePt,
-                                               std::vector<float>* deltaPt,
-                                               unsigned int pastSeconds)
+
+ThrottleBrakeTraceView::ThrottleBrakeTraceView(std::unordered_map<VariableEnum, std::vector<float>*> varHistoryFloatPts, unsigned int pastSeconds)
         : GLPL::FramelessDraggableWindow(700, 80, true, true) {
         // Set background color
         this->setBackgroundColor(0.25f, 0.25f, 0.25f, 0.75f);
@@ -21,11 +19,11 @@ ThrottleBrakeTraceView::ThrottleBrakeTraceView(std::vector<float>* sessionTimePt
         ThrottleBrakeTraceView::setupPlot();
 
         // Create lines
-        ThrottleBrakeTraceView::setupLines(sessionTimePt, throttlePt, brakePt, deltaPt);
+        ThrottleBrakeTraceView::setupLines(std::move(varHistoryFloatPts));
 
 }
 
-void ThrottleBrakeTraceView::drawView(unsigned int currStartIndex, float lastDelta) {
+void ThrottleBrakeTraceView::drawView(unsigned int currStartIndex) {
     // Pre-loop draw
     preLoopDraw(true);
 
@@ -70,10 +68,12 @@ void ThrottleBrakeTraceView::setupPlot() {
 
 }
 
-void ThrottleBrakeTraceView::setupLines(std::vector<float>* sessionTimePt,
-                                        std::vector<float>* throttlePt,
-                                        std::vector<float>* brakePt,
-                                        std::vector<float>* deltaPt) {
+void ThrottleBrakeTraceView::setupLines(std::unordered_map<VariableEnum, std::vector<float>*> varHistoryFloatPts) {
+    // Get Pointers
+    std::vector<float>* sessionTimePt = varHistoryFloatPts.at(SessionTime);
+    std::vector<float>* throttlePt = varHistoryFloatPts.at(Throttle);
+    std::vector<float>* brakePt = varHistoryFloatPts.at(Brake);
+    std::vector<float>* deltaPt = varHistoryFloatPts.at(LapDeltaToBestLap_DD);
     // Plot 1
     // Setup lines
     lineThrottle = std::make_shared<GLPL::ShadedLine2D2CircularVecs>(sessionTimePt, throttlePt);

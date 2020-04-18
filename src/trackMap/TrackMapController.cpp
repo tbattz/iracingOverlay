@@ -10,18 +10,17 @@
 #include "TrackMapController.h"
 
 
-TrackMapController::TrackMapController(std::shared_ptr<IRData> irData, unsigned int pastSeconds, std::vector<std::pair<IRDataType, const char*>> varList) {
+TrackMapController::TrackMapController(std::shared_ptr<IRData> irData, unsigned int pastSeconds) {
         /* Displays the specified variables over the last x seconds. */
         // Setup IRacing Data
         this->irData = std::move(irData);
-        this->varList = varList;
         unsigned int maxCount = ceil(1000.0 * pastSeconds/this->irData->getTimeout());
 
         // Create Model
         model = std::make_shared<TrackMapModel>(maxCount);
 
         // Create view
-        view = std::make_shared<TrackMapView>(model->getPositionPt(), pastSeconds);
+        view = std::make_shared<TrackMapView>(model->CommonModel<float>::getVarHistoryPts(), pastSeconds);
 
 }
 
@@ -56,7 +55,7 @@ void TrackMapController::updateData() {
     // Yaw
     model->setYaw(irData->getVarFloat(yawStr, 0));
     // Calculate Position
-    if(model->getSessionTimePt()->size() > 1) {
+    if(model->getPtVar(SessionTime)->size() > 1) {
         glm::dvec3 newPosition = TrackMapController::calculatePosition(prevVelocity, newVelocity, deltaT, prevYaw,
                                                                       prevPosition);
         model->setPosition(newPosition);

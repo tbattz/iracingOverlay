@@ -35,7 +35,7 @@ WheelInput::WheelInput(bool printEvents) {
 
 void WheelInput::checkForWheelInputs() {
     // Iterate through the joysticks
-    for(int i=0; i < foundJoystickIds.size(); i++) {
+    for(unsigned int i=0; i < foundJoystickIds.size(); i++) {
         // Check the buttons
         WheelInput::checkButtonUpdates(i);
 
@@ -61,7 +61,7 @@ void WheelInput::findJoySticks() {
 template <typename T, typename U>
 std::vector<T> WheelInput::copyArray(const U *oldArray, int oldArraySize) {
     std::vector<T> newArray;
-    for(unsigned int i=0; i<oldArraySize; i++) {
+    for(int i=0; i<oldArraySize; i++) {
         newArray.push_back((T)oldArray[i]);
     }
 

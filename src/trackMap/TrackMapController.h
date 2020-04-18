@@ -18,7 +18,7 @@
 class TrackMapController : public IDataReceiver {
 public:
     // Constructor
-    TrackMapController(std::shared_ptr<IRData> irData, unsigned int pastSeconds, std::vector<std::pair<IRDataType, const char*>> varList);
+    TrackMapController(std::shared_ptr<IRData> irData, unsigned int pastSeconds);
 
     // Functions
     glm::vec3 calculatePosition(glm::vec3 prevVelocity, glm::vec3 newVelocity, float deltaT, float prevYaw, glm::vec3 prevPosition);
@@ -30,7 +30,6 @@ public:
 
 private:
     // Data
-    std::vector<std::pair<IRDataType, const char*>> varList;
     std::shared_ptr<IRData> irData;
     
     // Model
