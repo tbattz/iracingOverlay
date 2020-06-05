@@ -43,10 +43,10 @@ int main(int argc, char* argv[]) {
     // Create Variable Controller
     std::vector<VarSetup> varList = {{IR_FLOAT, "LapDeltaToBestLap_DD", IDataStrings::LapDeltaToBestLap_DD},
                                      {IR_INT, "Gear", IDataStrings::Gear}};
-    VariablePlotController variablePlotController = VariablePlotController(irData, 10, varList);
+    //VariablePlotController variablePlotController = VariablePlotController(irData, 10, varList);
 
     // Create Track Map Controller
-    TrackMapController trackMapController = TrackMapController(irData, 120);
+    //TrackMapController trackMapController = TrackMapController(irData, 120);
 
 
     // Check for no keystrokes
@@ -55,27 +55,27 @@ int main(int argc, char* argv[]) {
         // Update data
         irData->updateData();
         throttleBrakeTraceController.updateData();
-        variablePlotController.updateData();
-        trackMapController.updateData();
+        //variablePlotController.updateData();
+        //trackMapController.updateData();
 
         // Show if car on track or not connected to setup placement of windows
         if(irData->isCarOnTrack() || !irData->isConnected()) {
             if(!windowsShown) {
                 // Reshow the windows
                 throttleBrakeTraceController.showWindow();
-                variablePlotController.showWindow();
-                trackMapController.showWindow();
+                //variablePlotController.showWindow();
+                //trackMapController.showWindow();
                 windowsShown = true;
             }
             // Update Windows
             throttleBrakeTraceController.drawWindow();
-            variablePlotController.drawWindow();
-            trackMapController.drawWindow();
+            //variablePlotController.drawWindow();
+            //trackMapController.drawWindow();
         } else {
             // Hide the windows
             throttleBrakeTraceController.hideWindow();
-            variablePlotController.hideWindow();
-            trackMapController.hideWindow();
+            //variablePlotController.hideWindow();
+            //trackMapController.hideWindow();
             windowsShown = false;
         }
         // Sleep for a little
