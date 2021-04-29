@@ -39,13 +39,13 @@ if not exist "%ProgramFiles%\mingw-w64\" (
 call:echoblue " =================================== CMake ===================================="
 if not exist "%ProgramFiles%\CMake\bin\" (
 	echo CMake not installed.
-	if exist "%UserProfile%\Downloads\cmake-3.7.1-win64-x64.msi" (
-		echo cmake-3.7.1-win64-x64.msi already downloaded.
+	if exist "%UserProfile%\Downloads\cmake-3.20.1-windows-x86_64.msi" (
+		echo cmake-3.20.1-windows-x86_64.msi already downloaded.
 	) else (
 		echo Downloading CMake.
-		"%UserProfile%\Downloads\wget.exe" --no-check-certificate https://cmake.org/files/v3.7/cmake-3.7.1-win64-x64.msi
+		"%UserProfile%\Downloads\wget.exe" --no-check-certificate https://cmake.org/files/v3.20/cmake-3.20.1-windows-x86_64.msi
 	)
-	start /w %UserProfile%\Downloads\cmake-3.7.1-win64-x64.msi
+	start /w %UserProfile%\Downloads\cmake-3.20.1-windows-x86_64.msi
 ) else (
 	echo CMake already installed.
 )
@@ -55,7 +55,7 @@ call:echoblue " ==================================== Git =======================
 if not exist "%ProgramFiles%\Git\cmd\" (
 	echo Git not installed.
 	if exist "%UserProfile%\Downloads\git-2.11.0-64-bit.exe" (
-		echo cmake-3.7.1-win64-x64.msi already downloaded.
+		echo git-2.11.0-64-bit.exe already downloaded.
 	) else (
 		echo Downloading Git.
 		"%UserProfile%\Downloads\wget.exe" --no-check-certificate https://github.com/git-for-windows/git/releases/download/v2.11.0.windows.1/Git-2.11.0-64-bit.exe
