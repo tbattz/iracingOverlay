@@ -15,23 +15,23 @@ A few scripts have been created to automate the installation process. In the eve
 ### Linux (Ubuntu)
 On Ubuntu these dependencies can be installed by running
 ```
-sudo chmod +x installDependicies.sh
-./installDependiciesUbuntu.txt
+sudo chmod +x installDependencies.sh
+./installDependenciesUbuntu.txt
 ```
 ### Windows
 On Windows, this is a two step process.
 ```
-installDependiciesWindows-part1.bat
+installDependenciesWindows-part1.bat
 ```
 Install the required packages as the installers popup.
 Add the environment variables specified at the end of the process.
 Then in a new commnd prompt,
 ```
-installDependiciesWindows-part2.bat
+installDependenciesWindows-part2.bat
 ```
 ## Manual Install
 ### Linux (Ubuntu)
-* Building dependicies
+* Building dependencies
 	* cmake
 	```
 	sudo apt-get install cmake
