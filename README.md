@@ -15,23 +15,23 @@ A few scripts have been created to automate the installation process. In the eve
 ### Linux (Ubuntu)
 On Ubuntu these dependencies can be installed by running
 ```
-sudo chmod +x installDependicies.sh
-./installDependiciesUbuntu.txt
+sudo chmod +x installDependencies.sh
+./installDependenciesUbuntu.txt
 ```
 ### Windows
 On Windows, this is a two step process.
 ```
-installDependiciesWindows-part1.bat
+installDependenciesWindows-part1.bat
 ```
 Install the required packages as the installers popup.
 Add the environment variables specified at the end of the process.
 Then in a new commnd prompt,
 ```
-installDependiciesWindows-part2.bat
+installDependenciesWindows-part2.bat
 ```
 ## Manual Install
 ### Linux (Ubuntu)
-* Building dependicies
+* Building dependencies
 	* cmake
 	```
 	sudo apt-get install cmake
@@ -87,6 +87,21 @@ Compile the program.
 ```
 make -j4
 ```
+
+## Running
+To run the program, simply execute the generated executable in the build/src directory.
+```
+cd build/src
+iracingTraceOverlay.exe
+```
+
+## Testing
+The trace can be run using IRacing telemetry .ibt files. To do this, edit src/irOverlay.cpp to set the filepath to the telemetry file, then run the following.
+```
+cd build/src
+iracingTraceOverlay.exe file
+```
+This can be useful for development, without needing to run an active IRacing session.
 
 ## Debugging
 To enable debugging, when running cmake, enable the debugging flag.
